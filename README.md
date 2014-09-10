@@ -1,3 +1,3 @@
 ln_company_enumerator
 =====================
-With a company id, try to get all employees.
+Give it a company id, and it will try to get all employees associated with the company.
