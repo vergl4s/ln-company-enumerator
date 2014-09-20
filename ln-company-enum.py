@@ -12,7 +12,6 @@ accountUsername = ""
 accountPassword = ""
 
 # TODO
-# remote html tags from role
 # save on the folder where user is atm
 # Accept multiple company ids and generate multiple outputs
 # Make function that access each user profile and grabs more information 
@@ -53,7 +52,7 @@ def startRequest():
 		dictOfResults = response['page']['voltron_unified_search_json']['search']['results']
 	except Exception, e:
 		print "Couldn't make sense of the server response page 1, something probably went wrong or maybe there are no results?"
-		sys.exit()z
+		sys.exit()
 	
 
 	print "Got " + str(resultCount) + " results."
@@ -113,7 +112,8 @@ def extractUsersAndWriteToFile(dictOfResults, outputFile):
 		#If the current user logged on can see the name, and not 'Linkedin Member'
 		if firstName:
 			lastName = p['lastName'].encode('ascii', 'ignore')
-			headline = p['fmt_headline'].encode('ascii', 'ignore')
+			#Remove HTML tags from headline
+			headline = re.sub('<[a-zA-Z ="/]+>', '', p['fmt_headline'].encode('ascii', 'ignore'))
 			personId = str(p['id'])
 			profileLink = p['link_nprofile_view_3']
 			line =  firstName + ',' + lastName + ',' + headline + ',' + personId + ',' + profileLink
@@ -153,6 +153,8 @@ if __name__ == "__main__":
 	else:
 		accountPassword = args.p
 
-	
-
 	startRequest()
+	
+else:
+	print __name__
+	
